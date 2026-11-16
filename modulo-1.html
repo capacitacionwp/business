@@ -122,14 +122,16 @@
     .slide-item > .slide { transform-origin: top left; transform: scale(var(--deck-scale, 0.5)); }
     .slide-item img { max-width: none; }
     /* La tarjeta de la presentación/video (slide + controles + puntos) tiene que entrar entera en la pantalla:
-       el ancho se limita según el alto disponible (≈256px entre header fijo, controles, puntos y aire) */
+       el ancho se limita según el alto disponible (≈240px entre header fijo, controles, puntos y aire) */
     @media (min-width: 1024px) {
-      #capacitacion .media-card { max-width: max(44rem, calc((100dvh - 256px) * 16 / 9 + 34px)); margin-inline: auto; }
+      #capacitacion .media-card { max-width: max(44rem, calc((100dvh - 240px) * 16 / 9 + 34px)); margin-inline: auto; }
     }
 
     #deck-frame.is-fs { position: fixed; inset: 0; z-index: 100; border-radius: 0; background: #0b141a; display: flex; flex-direction: column; justify-content: center; align-items: center; }
     #deck-frame.is-fs .slide-stage,
-    #deck-frame.is-fs .deck-controls { width: min(100vw, calc((100dvh - 72px) * 16 / 9)); }
+    #deck-frame.is-fs .deck-controls { width: min(100vw, calc((100dvh - 72px - 80px) * 16 / 9)); }
+    /* Margen extra abajo: en Windows la barra de tareas a veces queda encima de la pantalla completa y tapaba los controles */
+    #deck-frame.is-fs { padding-bottom: 48px; }
     #deck-frame.is-fs .deck-mobile-hint { display: none; }
     .fs-rotate-hint { display: none; }
     @media (orientation: portrait) and (max-width: 767px) {
@@ -159,13 +161,21 @@
     .quiz-opt.quiz-card input { margin-top: 2px; }
     .quiz-mark { position: absolute; transform: translate(-50%, -50%); width: 26px; height: 26px; border-radius: 9999px; background: #3de273; color: #002109; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 3px #ffffff; }
   </style>
+<!-- Animaciones de entrada: el contenido espera oculto hasta que el script de abajo prepara las animaciones (máx. 1,5 s) -->
+<style>html.reveal-wait main { opacity: 0; }</style>
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('reveal-wait');
+    setTimeout(function () { document.documentElement.classList.remove('reveal-wait'); }, 1500);
+  }
+</script>
 </head>
 <body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen">
 <!-- Header -->
 <header class="sticky top-0 left-0 right-0 z-50 bg-primary shadow-md">
-<div class="h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+<div class="h-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
 <a class="flex items-center gap-3" href="index.html">
-<img alt="Logo de WhatsApp Business Academy" class="h-11 w-11 object-contain" src="img/logo.png">
+<img alt="Logo de WhatsApp Business Academy" class="h-10 w-10 object-contain" src="img/logo.png">
 <div class="flex flex-col">
 <span class="font-title-md text-[15px] sm:text-title-md text-on-primary font-bold tracking-tight leading-tight">WhatsApp Business Academy</span>
 </div>
@@ -202,10 +212,6 @@
 <span aria-hidden="true" class="material-symbols-outlined text-[16px]">chevron_right</span>
 <span class="text-primary">Módulo 1</span>
 </nav>
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-xs font-bold mb-4">
-<span aria-hidden="true" class="material-symbols-outlined text-[16px]">badge</span>
-          Módulo 1
-        </span>
 <h1 class="font-display-lg text-3xl sm:text-4xl lg:text-5xl text-on-surface font-extrabold tracking-tight leading-[1.15] mb-3">
           Configuración del <span class="text-primary underline decoration-secondary-fixed-dim decoration-4 underline-offset-8">perfil comercial</span>
 </h1>
@@ -238,7 +244,7 @@ Módulo 2<span aria-hidden="true" class="material-symbols-outlined text-[18px] t
 <span class="format-icon w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 transition-colors"><span aria-hidden="true" class="material-symbols-outlined text-2xl">play_circle</span></span>
 <span class="flex flex-col items-center sm:items-start">
 <span class="font-title-md text-sm sm:text-base font-bold text-on-surface">Video</span>
-<span class="text-[11px] sm:text-xs text-on-surface-variant font-semibold">1:30 min</span>
+<span class="text-[11px] sm:text-xs text-on-surface-variant font-semibold">1:33 min</span>
 </span>
 </button>
 <button class="format-tab group text-center sm:text-left rounded-2xl p-3 sm:p-5 border-2 transition-all flex flex-col sm:flex-row items-center gap-2 sm:gap-4" data-format="podcast" role="tab" type="button">
@@ -1035,5 +1041,70 @@ Continuar<span aria-hidden="true" class="material-symbols-outlined text-[20px]">
       menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
     })();
   </script>
+
+<!-- Animaciones de entrada sutiles: los bloques aparecen con un leve fundido hacia arriba al entrar en pantalla -->
+<style>
+  @keyframes reveal-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  html.reveal-on .reveal { opacity: 0; }
+  html.reveal-on .reveal.is-in { animation: reveal-up .75s cubic-bezier(.22,.8,.3,1) var(--rd, 0ms) both; }
+</style>
+<script>
+  (function () {
+    var root = document.documentElement;
+    if (!root.classList.contains('reveal-wait')) return;
+    var SEL = 'main h1, main h2, main h3, main p, main ul, main form, main img, main nav, main .rounded-3xl, main .rounded-2xl, main .format-tab, main .section-tab';
+    var SKIP = '#deck-frame, .slide-item, .quiz-card, details, header, footer, [aria-hidden="true"]';
+    // Una imagen dentro de un marco (recorte, sombra o borde) se anima junto con su marco, para que no se vea la sombra sola antes
+    var all = Array.prototype.slice.call(document.querySelectorAll(SEL)).map(function (el) {
+      var frame = el.parentElement;
+      return el.tagName === 'IMG' && frame && frame.matches('.overflow-hidden, [class*="shadow"], [class*="ring-"]') ? frame : el;
+    }).filter(function (el, i, arr) {
+      return arr.indexOf(el) === i && !el.closest(SKIP) && el.offsetParent !== null;
+    });
+    // Solo el bloque más externo: si un elemento ya está dentro de otro que se anima, no se anima aparte
+    var items = all.filter(function (el) {
+      for (var p = el.parentElement; p; p = p.parentElement) if (all.indexOf(p) !== -1) return false;
+      return true;
+    });
+    items.forEach(function (el) { el.classList.add('reveal'); });
+    root.classList.add('reveal-on');
+    root.classList.remove('reveal-wait');
+    function done(e) {
+      var el = e.target;
+      if (e.animationName !== 'reveal-up') return;
+      el.classList.remove('reveal', 'is-in');
+      el.style.removeProperty('--rd');
+      el.removeEventListener('animationend', done);
+    }
+    var io = new IntersectionObserver(function (entries) {
+      var n = 0;
+      entries.forEach(function (e) {
+        // También se muestran los que quedaron arriba de la pantalla (por ejemplo, al saltar con un link a una sección)
+        if (!e.isIntersecting && e.boundingClientRect.top > 0) return;
+        var el = e.target;
+        io.unobserve(el);
+        var delay = Math.min(n++ * 90, 540);
+        // Si el bloque tiene imágenes, espera a que estén cargadas para no mostrar el marco vacío (máx. 3 s)
+        var imgs = Array.prototype.slice.call(el.tagName === 'IMG' ? [el] : el.querySelectorAll('img')).filter(function (img) { return !img.complete; });
+        var show = function () {
+          if (el.classList.contains('is-in')) return;
+          el.style.setProperty('--rd', delay + 'ms');
+          el.addEventListener('animationend', done);
+          el.classList.add('is-in');
+        };
+        if (!imgs.length) return show();
+        var left = imgs.length;
+        imgs.forEach(function (img) {
+          var ok = function () { if (--left === 0) { delay = 0; show(); } };
+          img.addEventListener('load', ok, { once: true });
+          img.addEventListener('error', ok, { once: true });
+        });
+        setTimeout(show, 3000);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    // Se espera a que la página se dibuje con todo oculto para que la entrada se vea completa
+    requestAnimationFrame(function () { requestAnimationFrame(function () { items.forEach(function (el) { io.observe(el); }); }); });
+  })();
+</script>
 </body>
 </html>

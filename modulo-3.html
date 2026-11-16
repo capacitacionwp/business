@@ -131,14 +131,16 @@
     .transcript-line.is-current { background: #eaf5fe; }
     .transcript-line.is-current .transcript-time { background: #00453d; color: #ffffff; }
     /* La tarjeta de la presentación/video (slide + controles + puntos) tiene que entrar entera en la pantalla:
-       el ancho se limita según el alto disponible (≈256px entre header fijo, controles, puntos y aire) */
+       el ancho se limita según el alto disponible (≈240px entre header fijo, controles, puntos y aire) */
     @media (min-width: 1024px) {
-      #capacitacion .media-card { max-width: max(44rem, calc((100dvh - 256px) * 16 / 9 + 34px)); margin-inline: auto; }
+      #capacitacion .media-card { max-width: max(44rem, calc((100dvh - 240px) * 16 / 9 + 34px)); margin-inline: auto; }
     }
 
     #deck-frame.is-fs { position: fixed; inset: 0; z-index: 100; border-radius: 0; background: #0b141a; display: flex; flex-direction: column; justify-content: center; align-items: center; }
     #deck-frame.is-fs .slide-stage,
-    #deck-frame.is-fs .deck-controls { width: min(100vw, calc((100dvh - 72px) * 16 / 9)); }
+    #deck-frame.is-fs .deck-controls { width: min(100vw, calc((100dvh - 72px - 80px) * 16 / 9)); }
+    /* Margen extra abajo: en Windows la barra de tareas a veces queda encima de la pantalla completa y tapaba los controles */
+    #deck-frame.is-fs { padding-bottom: 48px; }
     #deck-frame.is-fs .deck-mobile-hint { display: none; }
     .fs-rotate-hint { display: none; }
     @media (orientation: portrait) and (max-width: 767px) {
@@ -162,13 +164,21 @@
     .section-tab.is-active .section-icon { background: #00453d; color: #fff; }
     @media (min-width: 640px) { .section-tab { padding: 12px 16px; font-size: 15px; } }
   </style>
+<!-- Animaciones de entrada: el contenido espera oculto hasta que el script de abajo prepara las animaciones (máx. 1,5 s) -->
+<style>html.reveal-wait main { opacity: 0; }</style>
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('reveal-wait');
+    setTimeout(function () { document.documentElement.classList.remove('reveal-wait'); }, 1500);
+  }
+</script>
 </head>
 <body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen">
 <!-- Header -->
 <header class="sticky top-0 left-0 right-0 z-50 bg-primary shadow-md">
-<div class="h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+<div class="h-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
 <a class="flex items-center gap-3" href="index.html">
-<img alt="Logo de WhatsApp Business Academy" class="h-11 w-11 object-contain" src="img/logo.png">
+<img alt="Logo de WhatsApp Business Academy" class="h-10 w-10 object-contain" src="img/logo.png">
 <div class="flex flex-col">
 <span class="font-title-md text-[15px] sm:text-title-md text-on-primary font-bold tracking-tight leading-tight">WhatsApp Business Academy</span>
 </div>
@@ -205,10 +215,6 @@
 <span aria-hidden="true" class="material-symbols-outlined text-[16px]">chevron_right</span>
 <span class="text-primary">Módulo 3</span>
 </nav>
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-xs font-bold mb-4">
-<span aria-hidden="true" class="material-symbols-outlined text-[16px]">smart_toy</span>
-          Módulo 3
-        </span>
 <h1 class="font-display-lg text-3xl sm:text-4xl lg:text-5xl text-on-surface font-extrabold tracking-tight leading-[1.15] mb-3">
           Herramientas para gestionar <span class="text-primary underline decoration-secondary-fixed-dim decoration-4 underline-offset-8">clientes y mensajes</span>
 </h1>
@@ -239,14 +245,14 @@
 <span class="format-icon w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 transition-colors"><span aria-hidden="true" class="material-symbols-outlined text-2xl">play_circle</span></span>
 <span class="flex flex-col items-center sm:items-start">
 <span class="font-title-md text-sm sm:text-base font-bold text-on-surface">Video</span>
-<span class="text-[11px] sm:text-xs text-on-surface-variant font-semibold">Menos de 1 min</span>
+<span class="text-[11px] sm:text-xs text-on-surface-variant font-semibold" id="video-duration-label">0:23 min</span>
 </span>
 </button>
 <button class="format-tab group text-center sm:text-left rounded-2xl p-3 sm:p-5 border-2 transition-all flex flex-col sm:flex-row items-center gap-2 sm:gap-4" data-format="podcast" role="tab" type="button">
 <span class="format-icon w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shrink-0 transition-colors"><span aria-hidden="true" class="material-symbols-outlined text-2xl">headphones</span></span>
 <span class="flex flex-col items-center sm:items-start">
 <span class="font-title-md text-sm sm:text-base font-bold text-on-surface">Podcast</span>
-<span class="text-[11px] sm:text-xs text-on-surface-variant font-semibold">Menos de 3 min</span>
+<span class="text-[11px] sm:text-xs text-on-surface-variant font-semibold" id="podcast-duration-label">2:28 min</span>
 </span>
 </button>
 </div>
@@ -381,7 +387,7 @@
 <ol class="transcript-list px-2 sm:px-3 pb-3 space-y-1 hidden" data-section="0">
 <li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="0">
 <button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:00">0:00</button>
-<p class="text-sm text-on-surface leading-relaxed">Entramos a WhatsApp Business. Dentro de Herramientas, en la sección Organizar tus chats, presionamos Mensaje de bienvenida y activamos la opción.</p>
+<p class="text-sm text-on-surface leading-relaxed">Entramos a WhatsApp Business. Dentro de Herramientas, en la sección Organizá tus chats, presionamos Mensaje de bienvenida y activamos la opción.</p>
 </li>
 <li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="9">
 <button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:09">0:09</button>
@@ -396,13 +402,31 @@
 <p class="text-sm text-on-surface leading-relaxed">Luego ingresamos a Destinatarios y elegimos a qué personas queremos que les llegue el mensaje.</p>
 </li>
 </ol>
+<ol class="transcript-list px-2 sm:px-3 pb-3 space-y-1 hidden" data-section="1">
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="0">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:00">0:00</button>
+<p class="text-sm text-on-surface leading-relaxed">Entramos a WhatsApp Business. En la sección Organizá tus chats, tocá Mensaje de ausencia.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="6">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:06">0:06</button>
+<p class="text-sm text-on-surface leading-relaxed">Activá el interruptor. Aquí van a aparecer tres opciones para configurar.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="10">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:10">0:10</button>
+<p class="text-sm text-on-surface leading-relaxed">Primero, el mensaje que les va a llegar a los clientes en los horarios en los que no te encuentres trabajando. Presioná el tilde de arriba a la derecha para continuar.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="19">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:19">0:19</button>
+<p class="text-sm text-on-surface leading-relaxed">Luego configuramos el horario y, por último, los destinatarios a los que queremos que les llegue el mensaje.</p>
+</li>
+</ol>
 <ol class="transcript-list px-2 sm:px-3 pb-3 space-y-1 hidden" data-section="2">
 <li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="0">
 <button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:00">0:00</button>
 <p class="text-sm text-on-surface leading-relaxed">Entramos a WhatsApp Business. Primero abrí Herramientas y, en la sección Organizá tus chats, tocá Listas.</p>
 </li>
-<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="7">
-<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:07">0:07</button>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="8">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:08">0:08</button>
 <p class="text-sm text-on-surface leading-relaxed">Luego presionamos Crear una lista personalizada. Aquí la aplicación ya te sugiere algunas ideas, pero si querés crear una nueva, podés hacerlo.</p>
 </li>
 <li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="17">
@@ -413,13 +437,63 @@
 <button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:22">0:22</button>
 <p class="text-sm text-on-surface leading-relaxed">Podés cambiar el color de identificación de la lista tocando el nombre de la lista y luego tocás el tilde para confirmar.</p>
 </li>
-<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="28">
-<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:28">0:28</button>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="29">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:29">0:29</button>
 <p class="text-sm text-on-surface leading-relaxed">En esta vista podés ver qué personas o grupos forman parte de cada lista.</p>
 </li>
 <li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="35">
 <button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:35">0:35</button>
 <p class="text-sm text-on-surface leading-relaxed">Además, se puede silenciar a todas las personas de la lista, editar la lista, el color, el nombre o añadir nuevas personas o grupos.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="47">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:47">0:47</button>
+<p class="text-sm text-on-surface leading-relaxed">Ahora te vamos a mostrar cómo podemos usar las listas al recibir un nuevo pedido.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="51">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:51">0:51</button>
+<p class="text-sm text-on-surface leading-relaxed">Ingresamos a la información del contacto y tocamos Listas.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="55">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:55">0:55</button>
+<p class="text-sm text-on-surface leading-relaxed">Aquí aparecen todas las listas que tenemos creadas y asignamos Nuevo pedido.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="60">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 1:00">1:00</button>
+<p class="text-sm text-on-surface leading-relaxed">Y listo: de esta forma nos quedan organizados nuestros clientes.</p>
+</li>
+</ol>
+<ol class="transcript-list px-2 sm:px-3 pb-3 space-y-1 hidden" data-section="3">
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="0">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:00">0:00</button>
+<p class="text-sm text-on-surface leading-relaxed">Entramos a WhatsApp Business. Dentro de Herramientas, nos dirigimos a Organizá tus chats y tocamos Respuestas rápidas.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="6">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:06">0:06</button>
+<p class="text-sm text-on-surface leading-relaxed">Tocá el signo + que aparece arriba a la derecha para crear una nueva respuesta rápida.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="11">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:11">0:11</button>
+<p class="text-sm text-on-surface leading-relaxed">Hay que completar cuatro campos: el primero es una palabra de atajo para identificar el mensaje, el segundo es el mensaje en sí, y el tercero y el cuarto son opcionales.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="22">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:22">0:22</button>
+<p class="text-sm text-on-surface leading-relaxed">Y listo: tocamos el tilde para guardar nuestro mensaje.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="26">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:26">0:26</button>
+<p class="text-sm text-on-surface leading-relaxed">Ahora te mostramos cómo usar estas respuestas rápidas cuando un cliente te escribe.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="33">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:33">0:33</button>
+<p class="text-sm text-on-surface leading-relaxed">Recibimos una consulta: tenés que presionar el + de la izquierda y luego el botón con forma de rayo de la derecha.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="41">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:41">0:41</button>
+<p class="text-sm text-on-surface leading-relaxed">Aquí podés escribir la palabra «pedido» o buscar el mensaje de forma manual.</p>
+</li>
+<li class="transcript-line flex gap-3 rounded-xl p-2 sm:p-3 transition-colors" data-time="46">
+<button class="transcript-time shrink-0 h-7 px-2.5 rounded-full bg-surface-container text-primary text-xs font-bold tabular-nums hover:bg-primary-fixed transition-colors" type="button" aria-label="Ir al minuto 0:46">0:46</button>
+<p class="text-sm text-on-surface leading-relaxed">Una vez que lo tenemos, enviamos el mensaje y esperamos la respuesta de nuestro cliente.</p>
 </li>
 </ol>
 </details>
@@ -1058,12 +1132,15 @@ Continuar<span aria-hidden="true" class="material-symbols-outlined text-[20px]">
       updateAnswered();
     });
 
-    // Video y podcast de cada submódulo (3.2 y 3.4 todavía no tienen video)
+    // Video y podcast de cada submódulo (duration: duración exacta del video, se muestra en la pestaña Video)
     const sectionVideos = {
-      0: { src: 'video/modulo-3-1.mp4', cover: 'img/modulo-3/portada-video-3-1.jpg', caption: 'Grabación de pantalla · Activamos el mensaje de bienvenida de punta a punta' },
-      2: { src: 'video/modulo-3-3.mp4', cover: 'img/modulo-3/portada-video-3-3.jpg', caption: 'Grabación de pantalla · Creamos una lista y le sumamos contactos' },
+      0: { src: 'video/modulo-3-1.mp4', cover: 'img/modulo-3/portada-video-3-1.jpg', duration: '0:23', caption: 'Grabación de pantalla · Activamos el mensaje de bienvenida de punta a punta' },
+      1: { src: 'video/modulo-3-2.mp4', cover: 'img/modulo-3/portada-video-3-2.jpg', duration: '0:28', caption: 'Grabación de pantalla · Configuramos el mensaje de ausencia, el horario y los destinatarios' },
+      2: { src: 'video/modulo-3-3.mp4', cover: 'img/modulo-3/portada-video-3-3.jpg', duration: '1:04', caption: 'Grabación de pantalla · Creamos una lista, le sumamos contactos y la usamos con un pedido' },
+      3: { src: 'video/modulo-3-4.mp4', cover: 'img/modulo-3/portada-video-3-4.jpg', duration: '0:54', caption: 'Grabación de pantalla · Creamos una respuesta rápida y la usamos en un chat' },
     };
     const sectionAudios = ['audio/modulo-3-1.mp3', 'audio/modulo-3-2.mp3', 'audio/modulo-3-3.mp3', 'audio/modulo-3-4.mp3'];
+    const sectionAudioDurations = ['2:28', '2:52', '2:20', '2:51']; // duración exacta de cada podcast, se muestra en la pestaña Podcast
     const video = document.getElementById('module-video');
     const videoCover = document.getElementById('video-cover');
     const videoStage = document.getElementById('video-stage');
@@ -1074,6 +1151,8 @@ Continuar<span aria-hidden="true" class="material-symbols-outlined text-[20px]">
       video.pause();
       audio.pause();
       const v = sectionVideos[s];
+      document.getElementById('video-duration-label').textContent = v ? v.duration + ' min' : 'Próximamente';
+      document.getElementById('podcast-duration-label').textContent = sectionAudioDurations[s] + ' min';
       document.getElementById('video-card').classList.toggle('hidden', !v);
       document.getElementById('video-soon').classList.toggle('hidden', !!v);
       transcriptLists.forEach((ol) => ol.classList.toggle('hidden', Number(ol.dataset.section) !== s));
@@ -1217,5 +1296,70 @@ Continuar<span aria-hidden="true" class="material-symbols-outlined text-[20px]">
       menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
     })();
   </script>
+
+<!-- Animaciones de entrada sutiles: los bloques aparecen con un leve fundido hacia arriba al entrar en pantalla -->
+<style>
+  @keyframes reveal-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  html.reveal-on .reveal { opacity: 0; }
+  html.reveal-on .reveal.is-in { animation: reveal-up .75s cubic-bezier(.22,.8,.3,1) var(--rd, 0ms) both; }
+</style>
+<script>
+  (function () {
+    var root = document.documentElement;
+    if (!root.classList.contains('reveal-wait')) return;
+    var SEL = 'main h1, main h2, main h3, main p, main ul, main form, main img, main nav, main .rounded-3xl, main .rounded-2xl, main .format-tab, main .section-tab';
+    var SKIP = '#deck-frame, .slide-item, .quiz-card, details, header, footer, [aria-hidden="true"]';
+    // Una imagen dentro de un marco (recorte, sombra o borde) se anima junto con su marco, para que no se vea la sombra sola antes
+    var all = Array.prototype.slice.call(document.querySelectorAll(SEL)).map(function (el) {
+      var frame = el.parentElement;
+      return el.tagName === 'IMG' && frame && frame.matches('.overflow-hidden, [class*="shadow"], [class*="ring-"]') ? frame : el;
+    }).filter(function (el, i, arr) {
+      return arr.indexOf(el) === i && !el.closest(SKIP) && el.offsetParent !== null;
+    });
+    // Solo el bloque más externo: si un elemento ya está dentro de otro que se anima, no se anima aparte
+    var items = all.filter(function (el) {
+      for (var p = el.parentElement; p; p = p.parentElement) if (all.indexOf(p) !== -1) return false;
+      return true;
+    });
+    items.forEach(function (el) { el.classList.add('reveal'); });
+    root.classList.add('reveal-on');
+    root.classList.remove('reveal-wait');
+    function done(e) {
+      var el = e.target;
+      if (e.animationName !== 'reveal-up') return;
+      el.classList.remove('reveal', 'is-in');
+      el.style.removeProperty('--rd');
+      el.removeEventListener('animationend', done);
+    }
+    var io = new IntersectionObserver(function (entries) {
+      var n = 0;
+      entries.forEach(function (e) {
+        // También se muestran los que quedaron arriba de la pantalla (por ejemplo, al saltar con un link a una sección)
+        if (!e.isIntersecting && e.boundingClientRect.top > 0) return;
+        var el = e.target;
+        io.unobserve(el);
+        var delay = Math.min(n++ * 90, 540);
+        // Si el bloque tiene imágenes, espera a que estén cargadas para no mostrar el marco vacío (máx. 3 s)
+        var imgs = Array.prototype.slice.call(el.tagName === 'IMG' ? [el] : el.querySelectorAll('img')).filter(function (img) { return !img.complete; });
+        var show = function () {
+          if (el.classList.contains('is-in')) return;
+          el.style.setProperty('--rd', delay + 'ms');
+          el.addEventListener('animationend', done);
+          el.classList.add('is-in');
+        };
+        if (!imgs.length) return show();
+        var left = imgs.length;
+        imgs.forEach(function (img) {
+          var ok = function () { if (--left === 0) { delay = 0; show(); } };
+          img.addEventListener('load', ok, { once: true });
+          img.addEventListener('error', ok, { once: true });
+        });
+        setTimeout(show, 3000);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    // Se espera a que la página se dibuje con todo oculto para que la entrada se vea completa
+    requestAnimationFrame(function () { requestAnimationFrame(function () { items.forEach(function (el) { io.observe(el); }); }); });
+  })();
+</script>
 </body>
 </html>

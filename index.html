@@ -138,13 +138,21 @@
     ::-webkit-scrollbar-thumb { background: #00453d; border-radius: 9999px; border: 2px solid #effbf8; }
     ::-webkit-scrollbar-thumb:hover { background: #005e54; }
   </style>
+<!-- Animaciones de entrada: el contenido espera oculto hasta que el script de abajo prepara las animaciones (máx. 1,5 s) -->
+<style>html.reveal-wait main { opacity: 0; }</style>
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('reveal-wait');
+    setTimeout(function () { document.documentElement.classList.remove('reveal-wait'); }, 1500);
+  }
+</script>
 </head>
 <body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen">
 <!-- Header -->
 <header class="sticky top-0 left-0 right-0 z-50 bg-primary shadow-md">
-<div class="h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+<div class="h-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
 <a class="flex items-center gap-3" href="#">
-<img alt="Logo de WhatsApp Business Academy" class="h-11 w-11 object-contain" src="img/logo.png">
+<img alt="Logo de WhatsApp Business Academy" class="h-10 w-10 object-contain" src="img/logo.png">
 <div class="flex flex-col">
 <span class="font-title-md text-[15px] sm:text-title-md text-on-primary font-bold tracking-tight leading-tight">WhatsApp Business Academy</span>
 </div>
@@ -170,7 +178,7 @@
 <!-- Main Content -->
 <main class="w-full flex-grow bg-surface" id="inicio">
 <!-- Hero Section -->
-<section class="relative w-full overflow-hidden bg-surface-container-lowest py-10 lg:py-6 lg:min-h-[calc(100vh-5rem)] lg:flex lg:items-center border-b border-surface-container">
+<section class="relative w-full overflow-hidden bg-surface-container-lowest py-10 lg:py-6 lg:min-h-[calc(100vh-4rem)] lg:flex lg:items-center border-b border-surface-container">
 <!-- Ambient WhatsApp Pattern SVGs -->
 <div class="absolute inset-0 pointer-events-none opacity-20 select-none bg-repeat bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida/AEtjO1U5p883AwIhx9ho-1vmJP3SQQEQtbt1mfSH2W_h8e9pj5jZGXd-LwK7g9klkqCF1IhgQw4XFlrid4y9h-CWkib3LNIPpk68hZLU33NblritPLMFFAofBmurmo45LB4wL-xMYAeyvbMYUryEsy9sQm6G0zJJYGxJhxDq6WG6MTBUDZB5wxe6eRM4RbhFZ0l00IqOy-NdsK9XPvnFaLQFDFlYocEJXTec6YLPYloVSTZgXi3sbepI8c9vI6-p5Qy-EC5lz1A0GaWvsw'); background-size: 420px auto;"></div>
 <!-- Soft ambient radial glows -->
@@ -181,7 +189,7 @@
 <!-- Hero Left: Typography & CTAs -->
 <div class="lg:col-span-6 flex flex-col items-start">
 <h1 class="font-display-lg text-3xl sm:text-4xl lg:text-5xl text-on-surface font-extrabold tracking-tight leading-[1.15] mb-6">
-              Dominá <span class="text-primary underline decoration-secondary-fixed-dim decoration-4 underline-offset-8">WhatsApp Business</span> y potenciá tus ventas
+              Dominá <span class="hero-underline text-primary">WhatsApp Business</span> y potenciá tus ventas
             </h1>
 <p class="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-xl">
               Elegí cómo querés capacitarte: <span class="font-bold text-primary">presentación, video o podcast</span>, y dominá las herramientas clave: perfil comercial, catálogo digital, mensajes de bienvenida y ausencia, respuestas rápidas y listas.
@@ -234,25 +242,25 @@
 <img alt="Emprendedora utilizando WhatsApp Web en su laptop para ventas" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-UVxaYqwg2M6tRUHyjn40qy2hc833DWpcl7SQy7-4eT9PZ4X_AdAvc8kwxUV3R_bLoobFg7u4oMm4cddE3e45mUNHUK7I8Qs2OM1j1ZVfVLr9COdIMyMrbGi1GqvWBYwM8RLS95xrC0hpDr7uiDZbACRz15CnWueImN66ohKBOyFzARThQH01jXy1PdTotC4XDuWo8EPff4tx_TOQ7jobVuUwyLzoyMCaTSkGdKl37urctbmqu_gF">
 <div class="absolute inset-0 bg-gradient-to-t from-primary/25 via-transparent to-transparent"></div>
 </div>
-<!-- Mensaje enviado -->
-<div class="absolute top-4 left-0 sm:left-4 lg:top-10 lg:left-0 bg-[#d9fdd3] text-on-surface text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-2xl rounded-tr-sm shadow-lg">
-¡Quiero potenciar mis ventas! <span class="text-[#53bdeb] font-bold" aria-hidden="true">✓✓</span>
+<!-- Mensaje enviado (burbuja de WhatsApp con colita) -->
+<div class="hc-sent wa-bubble wa-out absolute top-4 left-0 sm:left-4 lg:top-10 lg:left-0 z-10 bg-[#d9fdd3] text-[#111b21] text-xs sm:text-sm font-medium pl-3 pr-2 py-1.5 rounded-lg rounded-tr-none shadow-lg flex items-end gap-2">
+<span>¡Quiero potenciar mis ventas!</span>
+<span class="flex items-center gap-0.5 text-[10px] text-[#667781] leading-none pb-px shrink-0">10:29 <span class="hc-ticks material-symbols-outlined text-[15px] leading-none text-[#53bdeb]" aria-hidden="true">done_all</span></span>
 </div>
-<!-- Mensaje recibido: lo que vas a aprender -->
-<div class="relative -mt-28 sm:-mt-36 lg:mt-0 lg:absolute lg:left-0 lg:bottom-0 w-[86%] sm:w-[330px] bg-surface-container-lowest rounded-3xl rounded-tl-md shadow-2xl border border-surface-container p-4 sm:p-5">
-<div class="flex items-center gap-2 mb-2">
-<img alt="" class="w-7 h-7 rounded-full" src="img/logo.png">
-<span class="text-xs font-bold text-primary">WhatsApp Business Academy</span>
-</div>
-<p class="text-sm font-semibold text-on-surface mb-3">¡Hola! 👋 Acá vas a aprender a:</p>
-<ul class="flex flex-col gap-2 text-[13px] sm:text-sm text-on-surface-variant">
-<li class="flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-primary shrink-0">storefront</span><span>Configurar tu <b class="text-on-surface">perfil comercial</b></span></li>
-<li class="flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-primary shrink-0">shopping_bag</span><span>Cargar tu <b class="text-on-surface">catálogo digital</b></span></li>
-<li class="flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-primary shrink-0">bolt</span><span>Usar <b class="text-on-surface">respuestas rápidas</b></span></li>
-<li class="flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-primary shrink-0">sell</span><span>Ordenar tus chats con <b class="text-on-surface">listas</b></span></li>
-<li class="flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-primary shrink-0">smart_toy</span><span>Automatizar <b class="text-on-surface">bienvenida y ausencia</b></span></li>
+<!-- Mensaje recibido: lo que vas a aprender (burbuja de WhatsApp; antes aparece "escribiendo…") -->
+<div class="relative -mt-28 sm:-mt-36 lg:mt-0 lg:absolute lg:left-0 lg:bottom-0 w-[86%] sm:w-[330px] z-10">
+<div class="hc-typing wa-bubble wa-in absolute top-0 left-0 bg-white rounded-lg rounded-tl-none shadow-lg px-4 py-3" aria-hidden="true"><span class="hc-dots"><i></i><i></i><i></i></span></div>
+<div class="hc-in wa-bubble wa-in relative bg-white text-[#111b21] rounded-lg rounded-tl-none shadow-2xl px-4 pt-3 pb-2">
+<p class="text-sm font-semibold mb-2.5">¡Hola! 👋 Acá vas a aprender a:</p>
+<ul class="flex flex-col gap-2 text-[13px] sm:text-sm text-[#3b4a54]">
+<li class="hc-item flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-[#008069] shrink-0">storefront</span><span>Configurar tu <b class="text-[#111b21]">perfil comercial</b></span></li>
+<li class="hc-item flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-[#008069] shrink-0">shopping_bag</span><span>Cargar tu <b class="text-[#111b21]">catálogo digital</b></span></li>
+<li class="hc-item flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-[#008069] shrink-0">bolt</span><span>Usar <b class="text-[#111b21]">respuestas rápidas</b></span></li>
+<li class="hc-item flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-[#008069] shrink-0">sell</span><span>Ordenar tus chats con <b class="text-[#111b21]">listas</b></span></li>
+<li class="hc-item flex items-center gap-2.5"><span aria-hidden="true" class="material-symbols-outlined text-[18px] text-[#008069] shrink-0">smart_toy</span><span>Automatizar <b class="text-[#111b21]">bienvenida y ausencia</b></span></li>
 </ul>
-<span class="block text-right text-[10px] text-outline mt-2">10:30</span>
+<span class="block text-right text-[10px] text-[#667781] mt-1.5">10:30</span>
+</div>
 </div>
 </div>
 </div>
@@ -293,25 +301,25 @@
 <span class="font-label-sm text-xs text-on-surface-variant font-semibold">Paso inicial</span>
 </div>
 <!-- Visual Mockup: Perfil Comercial -->
-<div class="w-full rounded-2xl bg-surface-container p-4 mb-6 shadow-inner flex flex-col gap-3 group-hover:scale-[1.01] transition-transform border border-surface-container-high h-56 justify-center">
+<div data-mock="perfil" class="w-full rounded-2xl bg-surface-container p-4 mb-6 shadow-inner flex flex-col gap-3 group-hover:scale-[1.01] transition-transform border border-surface-container-high h-40 justify-center">
 <div class="flex items-center gap-3 pb-3 border-b border-surface-container-high">
-<div class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+<div data-step="1" class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
 <span aria-hidden="true" class="material-symbols-outlined text-2xl">storefront</span>
 </div>
-<div class="flex-1 min-w-0">
+<div data-step="2" class="flex-1 min-w-0">
 <div class="flex items-center gap-1.5">
 <span class="font-title-md text-sm font-bold text-on-surface truncate">Dulce Hogar</span>
 </div>
 <p class="font-label-sm text-[11px] text-on-surface-variant">Compras y ventas</p>
 </div>
-<span class="px-2 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px] font-bold">Abierto</span>
+<span data-step="3" class="px-2 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm text-[11px] font-bold inline-flex items-center gap-1.5"><span class="mk-dot" aria-hidden="true"></span>Abierto</span>
 </div>
 <div class="space-y-1.5 text-xs text-on-surface-variant font-body-sm">
-<div class="flex items-center gap-2">
+<div data-step="4" class="flex items-center gap-2">
 <span aria-hidden="true" class="material-symbols-outlined text-[16px] text-primary">schedule</span>
 <span class="">Lun a sáb · 9 a 18 h</span>
 </div>
-<div class="flex items-center gap-2">
+<div data-step="5" class="flex items-center gap-2">
 <span aria-hidden="true" class="material-symbols-outlined text-[16px] text-primary">location_on</span>
 <span class="">San Martín 123</span>
 </div>
@@ -361,22 +369,22 @@
 <span class="font-label-sm text-xs text-on-surface-variant font-semibold">Ventas y productos</span>
 </div>
 <!-- Visual Mockup: Catálogo Digital Item -->
-<div class="w-full rounded-2xl bg-surface-container p-4 mb-6 shadow-inner flex flex-col gap-3 group-hover:scale-[1.01] transition-transform border border-surface-container-high h-56 justify-center">
-<div class="bg-surface-container-lowest p-3 rounded-xl border border-surface-container flex items-center gap-3 shadow-sm">
+<div data-mock="catalogo" class="w-full rounded-2xl bg-surface-container p-4 mb-6 shadow-inner flex flex-col gap-3 group-hover:scale-[1.01] transition-transform border border-surface-container-high h-40 justify-center">
+<div data-step="1" class="bg-surface-container-lowest p-3 rounded-xl border border-surface-container flex items-center gap-3 shadow-sm">
 <div class="w-12 h-12 rounded-lg bg-surface-variant flex items-center justify-center text-primary shrink-0">
 <span aria-hidden="true" class="material-symbols-outlined text-2xl">inventory_2</span>
 </div>
 <div class="flex-1 min-w-0 text-left">
 <p class="font-title-md text-sm font-bold text-on-surface truncate">Pack Promocional</p>
-<p class="font-headline-sm text-sm font-extrabold text-secondary mt-0.5">$15.000</p>
+<p class="font-headline-sm text-sm font-extrabold text-secondary mt-0.5 tabular-nums" data-price="15000">$15.000</p>
 </div>
-<span class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-primary shadow-sm">
+<span class="mk-share w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-primary shadow-sm">
 <span aria-hidden="true" class="material-symbols-outlined text-[16px]">share</span>
 </span>
 </div>
-<div class="flex items-center justify-between text-[11px] text-on-surface-variant font-label-sm px-1">
+<div data-step="2" class="flex items-center justify-between text-[11px] text-on-surface-variant font-label-sm px-1">
 <span class="flex items-center gap-1 text-secondary font-bold">
-<span aria-hidden="true" class="material-symbols-outlined text-[14px]">check</span> En stock (12 disp.)
+<span aria-hidden="true" class="material-symbols-outlined text-[14px]">check</span> <span>En stock (<span data-stock class="inline-block tabular-nums">12</span> disp.)</span>
 </span>
 <span class="text-primary font-semibold">Colección Verano</span>
 </div>
@@ -427,27 +435,25 @@
                 </span>
 </div>
 <!-- Visual Mockup: Respuestas y Listas -->
-<div class="w-full rounded-2xl bg-[#EFEAE2] p-3.5 mb-6 shadow-inner flex flex-col gap-2.5 group-hover:scale-[1.01] transition-transform relative overflow-hidden h-56 justify-center">
+<div data-mock="chat" class="w-full rounded-2xl bg-[#EFEAE2] p-3.5 mb-6 shadow-inner flex flex-col gap-2 group-hover:scale-[1.01] transition-transform relative overflow-hidden h-40 justify-center">
 <!-- Labels chip row -->
-<div class="flex items-center gap-1.5 flex-wrap">
+<div data-step="1" class="flex items-center gap-1.5 flex-wrap">
 <span class="px-2 py-0.5 rounded-full bg-primary text-on-primary text-[10px] font-bold flex items-center gap-1">
 <span aria-hidden="true" class="material-symbols-outlined text-[12px]">sell</span> Nuevo cliente
 </span>
-<span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold flex items-center gap-1">
+<span data-chip-pedido class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold flex items-center gap-1">
 <span aria-hidden="true" class="material-symbols-outlined text-[12px]">sell</span> Nuevo pedido
 </span>
 </div>
 <!-- Incoming Bubble -->
-<div class="max-w-[85%] bg-white p-2 rounded-lg rounded-tl-none shadow-sm text-left">
+<div data-step="2" class="max-w-[85%] bg-white p-2 rounded-lg rounded-tl-none shadow-sm text-left">
 <p class="font-body-sm text-[11px] text-[#111B21]">¡Hola! ¿Tienen stock disponible?</p>
 </div>
 <!-- Automated Outgoing Bubble -->
-<div class="self-end max-w-[85%] bg-[#DCF8C6] p-2 rounded-lg rounded-tr-none shadow-sm text-left">
-<p class="font-body-sm text-[11px] text-[#111B21]">¡Hola! Sí, contamos con stock inmediato. ¿En qué color te gustaría?</p>
-<div class="flex justify-end items-center gap-1 text-[9px] text-secondary font-bold mt-0.5">
-<span class="">Auto</span>
-<span aria-hidden="true" class="material-symbols-outlined text-[12px]">done_all</span>
-</div>
+<div data-out class="self-end max-w-[85%] bg-[#DCF8C6] p-2 rounded-lg rounded-tr-none shadow-sm text-left flex items-end gap-2">
+<span class="mk-typing" aria-hidden="true"><i></i><i></i><i></i></span>
+<p data-out-text class="font-body-sm text-[11px] text-[#111B21]">¡Sí! ¿Qué color te gustaría?</p>
+<span data-ticks class="flex items-center gap-0.5 text-[9px] text-secondary font-bold shrink-0">Auto<span aria-hidden="true" class="material-symbols-outlined text-[12px]">done_all</span></span>
 </div>
 </div>
 <h3 class="font-headline-sm text-xl text-on-surface font-bold mb-3">
@@ -741,5 +747,213 @@
       menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
     })();
   </script>
+
+<!-- Subrayado de "WhatsApp Business" en el hero: la línea se dibuja de izquierda a derecha (sigue a la segunda línea si el texto se parte) -->
+<style>
+  .hero-underline { background-image: linear-gradient(#3de273, #3de273); background-repeat: no-repeat; background-position: 0 100%; background-size: 100% 4px; padding-bottom: 2px; }
+  html.underline-anim .hero-underline { background-size: 0% 4px; transition: background-size 1.2s cubic-bezier(.65,0,.35,1); }
+  html.underline-anim .hero-underline.is-drawn { background-size: 100% 4px; }
+</style>
+<script>
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.documentElement.classList.add('underline-anim');
+    var el = document.querySelector('.hero-underline');
+    // Arranca cuando el título ya está entrando
+    setTimeout(function () { el.classList.add('is-drawn'); }, 700);
+  })();
+</script>
+
+<!-- Hero: burbujas con estilo WhatsApp y conversación animada (se envía el mensaje, se lee, "escribiendo…" y llega la respuesta) -->
+<style>
+  .wa-out::after { content: ""; position: absolute; top: 0; right: -7px; border-top: 10px solid #d9fdd3; border-right: 8px solid transparent; }
+  .wa-in::before { content: ""; position: absolute; top: 0; left: -7px; border-top: 10px solid #ffffff; border-left: 8px solid transparent; }
+  .hc-dots { display: inline-flex; gap: 4px; align-items: center; height: 10px; }
+  .hc-dots i { width: 7px; height: 7px; border-radius: 9999px; background: #8696a0; animation: hc-dot 1s infinite ease-in-out; }
+  .hc-dots i:nth-child(2) { animation-delay: .15s; }
+  .hc-dots i:nth-child(3) { animation-delay: .3s; }
+  @keyframes hc-dot { 0%, 60%, 100% { transform: none; opacity: .5; } 30% { transform: translateY(-3px); opacity: 1; } }
+  .hc-typing { opacity: 0; transform: scale(.8); transform-origin: top left; transition: opacity .25s ease, transform .3s cubic-bezier(.2,.9,.3,1.3); }
+  .hc-typing.on { opacity: 1; transform: none; }
+  html.hc-anim .hc-sent { opacity: 0; transform: scale(.85) translateY(6px); transform-origin: top right; }
+  html.hc-anim .hc-in { opacity: 0; transform: scale(.92) translateY(8px); transform-origin: top left; }
+  html.hc-anim .hc-item { opacity: 0; transform: translateX(-6px); }
+  html.hc-anim .hc-ticks { color: #8696a0; }
+  /* Las transiciones se activan recién después del primer cuadro, para que las burbujas arranquen ocultas sin parpadeo */
+  html.hc-run .hc-sent, html.hc-run .hc-in { transition: opacity .35s ease, transform .45s cubic-bezier(.2,.9,.3,1.25); }
+  html.hc-run .hc-item { transition: opacity .35s ease, transform .35s ease; }
+  html.hc-run .hc-ticks { transition: color .3s ease; }
+  html.hc-anim .hc-sent.on, html.hc-anim .hc-in.on { opacity: 1; transform: none; }
+  html.hc-anim .hc-item.on { opacity: 1; transform: none; }
+  html.hc-anim .hc-ticks.on { color: #53bdeb; }
+</style>
+<script>
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var root = document.documentElement;
+    root.classList.add('hc-anim');
+    requestAnimationFrame(function () { requestAnimationFrame(function () { root.classList.add('hc-run'); }); });
+    var q = function (sel) { return document.querySelector(sel); };
+    var sent = q('.hc-sent'), ticks = q('.hc-ticks'), typing = q('.hc-typing'), inc = q('.hc-in');
+    var items = Array.prototype.slice.call(document.querySelectorAll('.hc-item'));
+    var at = function (ms, fn) { setTimeout(fn, ms); };
+    at(900, function () { sent.classList.add('on'); });
+    at(1600, function () { ticks.classList.add('on'); });
+    at(1900, function () { typing.classList.add('on'); });
+    at(3300, function () { typing.classList.remove('on'); inc.classList.add('on'); });
+    items.forEach(function (li, i) { at(3600 + i * 160, function () { li.classList.add('on'); }); });
+  })();
+</script>
+
+<!-- Ilustraciones de las cards de módulos: se arman al aparecer en pantalla; el chat del módulo 3 se repite como una conversación real -->
+<style>
+  [data-mock].mk [data-step], [data-mock].mk [data-out] { opacity: 0; transform: translateY(8px) scale(.97); transition: opacity .45s ease, transform .5s cubic-bezier(.2,.9,.3,1.25); }
+  [data-mock].mk [data-step].on, [data-mock].mk [data-out].on { opacity: 1; transform: none; }
+  .mk-dot { width: 6px; height: 6px; border-radius: 9999px; background: #25d366; flex-shrink: 0; animation: mk-pulse 1.8s ease-out infinite; }
+  @keyframes mk-pulse { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,.6); } 70%, 100% { box-shadow: 0 0 0 6px rgba(37,211,102,0); } }
+  .mk-share.ping { animation: mk-ping .9s ease-out; }
+  @keyframes mk-ping { 0% { box-shadow: 0 0 0 0 rgba(0,69,61,.35); transform: scale(1); } 30% { transform: scale(1.12); } 100% { box-shadow: 0 0 0 10px rgba(0,69,61,0); transform: scale(1); } }
+  [data-stock].flash { animation: mk-flash .6s ease; }
+  @keyframes mk-flash { 50% { transform: scale(1.35); color: #00453d; } }
+  .mk-typing { display: none; align-items: center; gap: 3px; height: 15px; padding: 0 4px; }
+  .mk-typing i { width: 5px; height: 5px; border-radius: 9999px; background: #667781; animation: mk-dots 1s infinite ease-in-out; }
+  .mk-typing i:nth-child(2) { animation-delay: .15s; }
+  .mk-typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes mk-dots { 0%, 60%, 100% { transform: none; opacity: .45; } 30% { transform: translateY(-3px); opacity: 1; } }
+  [data-out].typing .mk-typing { display: inline-flex; }
+  [data-out].typing [data-out-text], [data-out].typing [data-ticks] { display: none; }
+  [data-ticks] { transition: color .3s ease; }
+  [data-ticks].read { color: #34b7f1; }
+  [data-chip-pedido].pop { animation: mk-chip .7s ease; }
+  @keyframes mk-chip { 40% { transform: scale(1.14); box-shadow: 0 0 0 4px rgba(61,226,115,.35); } }
+</style>
+<script>
+  (function () {
+    var mocks = Array.prototype.slice.call(document.querySelectorAll('[data-mock]'));
+    if (!mocks.length || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    mocks.forEach(function (m) { m.classList.add('mk'); });
+    function steps(m) {
+      return Array.prototype.slice.call(m.querySelectorAll('[data-step]')).sort(function (a, b) { return a.dataset.step - b.dataset.step; });
+    }
+    function retrigger(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+    var run = {
+      // Perfil: aparece el negocio dato por dato y el "Abierto" queda latiendo
+      perfil: function (m) {
+        steps(m).forEach(function (el, i) { setTimeout(function () { el.classList.add('on'); }, i * 220); });
+      },
+      // Catálogo: entra el producto, el precio sube hasta $15.000 y cada tanto "se vende" una unidad
+      catalogo: function (m) {
+        steps(m).forEach(function (el, i) { setTimeout(function () { el.classList.add('on'); }, i * 350); });
+        var price = m.querySelector('[data-price]'), target = Number(price.dataset.price), t0 = null;
+        price.textContent = '$0';
+        setTimeout(function () {
+          requestAnimationFrame(function tick(t) {
+            t0 = t0 || t;
+            var k = Math.min(1, (t - t0) / 900);
+            k = 1 - Math.pow(1 - k, 3);
+            price.textContent = '$' + (Math.round(target * k / 100) * 100).toLocaleString('es-AR');
+            if (k < 1) requestAnimationFrame(tick);
+          });
+        }, 250);
+        var stock = m.querySelector('[data-stock]'), share = m.querySelector('.mk-share'), n = 12;
+        setInterval(function () {
+          n = n <= 9 ? 12 : n - 1;
+          stock.textContent = n;
+          retrigger(stock, 'flash');
+          retrigger(share, 'ping');
+        }, 4000);
+      },
+      // Chat: llega la consulta, aparece "escribiendo…", sale la respuesta automática, se lee (✓✓ azul) y se etiqueta el chat
+      chat: function (m) {
+        var chips = m.querySelector('[data-step="1"]'), inc = m.querySelector('[data-step="2"]');
+        var out = m.querySelector('[data-out]'), ticks = m.querySelector('[data-ticks]'), chip = m.querySelector('[data-chip-pedido]');
+        chips.classList.add('on');
+        (function cycle() {
+          inc.classList.remove('on'); out.classList.remove('on'); ticks.classList.remove('read'); chip.classList.remove('pop');
+          setTimeout(function () { out.classList.add('typing'); }, 450);
+          setTimeout(function () { inc.classList.add('on'); }, 600);
+          setTimeout(function () { out.classList.add('on'); }, 1500);
+          setTimeout(function () { out.classList.remove('typing'); }, 3000);
+          setTimeout(function () { ticks.classList.add('read'); }, 3700);
+          setTimeout(function () { chip.classList.add('pop'); }, 4100);
+          setTimeout(cycle, 8000);
+        })();
+      }
+    };
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        setTimeout(function () { run[e.target.dataset.mock](e.target); }, 500);
+      });
+    }, { threshold: 0.4 });
+    mocks.forEach(function (m) { io.observe(m); });
+  })();
+</script>
+
+<!-- Animaciones de entrada sutiles: los bloques aparecen con un leve fundido hacia arriba al entrar en pantalla -->
+<style>
+  @keyframes reveal-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  html.reveal-on .reveal { opacity: 0; }
+  html.reveal-on .reveal.is-in { animation: reveal-up .75s cubic-bezier(.22,.8,.3,1) var(--rd, 0ms) both; }
+</style>
+<script>
+  (function () {
+    var root = document.documentElement;
+    if (!root.classList.contains('reveal-wait')) return;
+    var SEL = 'main h1, main h2, main h3, main p, main ul, main form, main img, main nav, main .rounded-3xl, main .rounded-2xl, main .format-tab, main .section-tab';
+    var SKIP = '#deck-frame, .slide-item, .quiz-card, details, header, footer, [aria-hidden="true"], .hc-in, .hc-sent';
+    // Una imagen dentro de un marco (recorte, sombra o borde) se anima junto con su marco, para que no se vea la sombra sola antes
+    var all = Array.prototype.slice.call(document.querySelectorAll(SEL)).map(function (el) {
+      var frame = el.parentElement;
+      return el.tagName === 'IMG' && frame && frame.matches('.overflow-hidden, [class*="shadow"], [class*="ring-"]') ? frame : el;
+    }).filter(function (el, i, arr) {
+      return arr.indexOf(el) === i && !el.closest(SKIP) && el.offsetParent !== null;
+    });
+    // Solo el bloque más externo: si un elemento ya está dentro de otro que se anima, no se anima aparte
+    var items = all.filter(function (el) {
+      for (var p = el.parentElement; p; p = p.parentElement) if (all.indexOf(p) !== -1) return false;
+      return true;
+    });
+    items.forEach(function (el) { el.classList.add('reveal'); });
+    root.classList.add('reveal-on');
+    root.classList.remove('reveal-wait');
+    function done(e) {
+      var el = e.target;
+      if (e.animationName !== 'reveal-up') return;
+      el.classList.remove('reveal', 'is-in');
+      el.style.removeProperty('--rd');
+      el.removeEventListener('animationend', done);
+    }
+    var io = new IntersectionObserver(function (entries) {
+      var n = 0;
+      entries.forEach(function (e) {
+        // También se muestran los que quedaron arriba de la pantalla (por ejemplo, al saltar con un link a una sección)
+        if (!e.isIntersecting && e.boundingClientRect.top > 0) return;
+        var el = e.target;
+        io.unobserve(el);
+        var delay = Math.min(n++ * 90, 540);
+        // Si el bloque tiene imágenes, espera a que estén cargadas para no mostrar el marco vacío (máx. 3 s)
+        var imgs = Array.prototype.slice.call(el.tagName === 'IMG' ? [el] : el.querySelectorAll('img')).filter(function (img) { return !img.complete; });
+        var show = function () {
+          if (el.classList.contains('is-in')) return;
+          el.style.setProperty('--rd', delay + 'ms');
+          el.addEventListener('animationend', done);
+          el.classList.add('is-in');
+        };
+        if (!imgs.length) return show();
+        var left = imgs.length;
+        imgs.forEach(function (img) {
+          var ok = function () { if (--left === 0) { delay = 0; show(); } };
+          img.addEventListener('load', ok, { once: true });
+          img.addEventListener('error', ok, { once: true });
+        });
+        setTimeout(show, 3000);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    // Se espera a que la página se dibuje con todo oculto para que la entrada se vea completa
+    requestAnimationFrame(function () { requestAnimationFrame(function () { items.forEach(function (el) { io.observe(el); }); }); });
+  })();
+</script>
 </body>
 </html>
