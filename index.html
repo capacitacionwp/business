@@ -146,6 +146,14 @@
     setTimeout(function () { document.documentElement.classList.remove('reveal-wait'); }, 1500);
   }
 </script>
+<style>
+    /* Menú mobile: panel flotante sobre el contenido (no empuja la página) con fondo oscurecido */
+    #mobile-menu { position: absolute; left: 12px; right: 12px; top: calc(100% + 8px); border-radius: 20px; background: #00453d; box-shadow: 0 24px 48px rgba(0,0,0,.28); opacity: 0; transform: translateY(-8px) scale(.98); transform-origin: top right; visibility: hidden; transition: opacity .2s ease, transform .25s cubic-bezier(.2,.9,.3,1.2), visibility 0s linear .25s; }
+    #mobile-menu.is-open { opacity: 1; transform: none; visibility: visible; transition: opacity .2s ease, transform .25s cubic-bezier(.2,.9,.3,1.2), visibility 0s; }
+    #menu-backdrop { position: fixed; inset: 0; z-index: 40; background: rgba(11,20,26,.35); backdrop-filter: blur(2px); opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility 0s linear .2s; }
+    #menu-backdrop.is-open { opacity: 1; visibility: visible; transition: opacity .2s ease, visibility 0s; }
+    @media (min-width: 768px) { #mobile-menu, #menu-backdrop { display: none; } }
+  </style>
 </head>
 <body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen">
 <!-- Header -->
@@ -169,7 +177,7 @@
 </div>
 </div>
 <!-- Mobile menu -->
-<nav class="md:hidden hidden border-t border-white/10 px-4 pb-4 pt-2 space-y-1" id="mobile-menu" aria-label="Menú principal">
+<nav class="md:hidden p-2 space-y-1" id="mobile-menu" aria-label="Menú principal">
 <a class="block px-4 py-3 rounded-xl text-sm font-semibold bg-primary-container text-on-primary" href="#inicio">Inicio</a>
 <a class="block px-4 py-3 rounded-xl text-sm font-semibold text-primary-fixed-dim hover:bg-primary-container hover:text-white" href="#modalidades">Capacitaciones</a>
 <a class="block px-4 py-3 rounded-xl text-sm font-semibold text-primary-fixed-dim hover:bg-primary-container hover:text-white" href="#testimonios">Testimonios</a>
@@ -178,7 +186,7 @@
 <!-- Main Content -->
 <main class="w-full flex-grow bg-surface" id="inicio">
 <!-- Hero Section -->
-<section class="relative w-full overflow-hidden bg-surface-container-lowest py-10 lg:py-6 lg:min-h-[calc(100vh-4rem)] lg:flex lg:items-center border-b border-surface-container">
+<section class="relative w-full overflow-hidden bg-surface-container-lowest pt-7 pb-10 lg:py-6 lg:min-h-[calc(100vh-4rem)] lg:flex lg:items-center border-b border-surface-container">
 <!-- Ambient WhatsApp Pattern SVGs -->
 <div class="absolute inset-0 pointer-events-none opacity-20 select-none bg-repeat bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida/AEtjO1U5p883AwIhx9ho-1vmJP3SQQEQtbt1mfSH2W_h8e9pj5jZGXd-LwK7g9klkqCF1IhgQw4XFlrid4y9h-CWkib3LNIPpk68hZLU33NblritPLMFFAofBmurmo45LB4wL-xMYAeyvbMYUryEsy9sQm6G0zJJYGxJhxDq6WG6MTBUDZB5wxe6eRM4RbhFZ0l00IqOy-NdsK9XPvnFaLQFDFlYocEJXTec6YLPYloVSTZgXi3sbepI8c9vI6-p5Qy-EC5lz1A0GaWvsw'); background-size: 420px auto;"></div>
 <!-- Soft ambient radial glows -->
@@ -188,55 +196,55 @@
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
 <!-- Hero Left: Typography & CTAs -->
 <div class="lg:col-span-6 flex flex-col items-start">
-<h1 class="font-display-lg text-3xl sm:text-4xl lg:text-5xl text-on-surface font-extrabold tracking-tight leading-[1.15] mb-6">
+<h1 class="font-display-lg text-[30px] sm:text-4xl lg:text-5xl text-on-surface font-extrabold tracking-tight leading-[1.15] mb-4 sm:mb-6">
               Dominá <span class="hero-underline text-primary">WhatsApp Business</span> y potenciá tus ventas
             </h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-xl">
+<p class="font-body-lg text-[15px] leading-relaxed sm:text-body-lg text-on-surface-variant mb-6 sm:mb-8 max-w-xl">
               Elegí cómo querés capacitarte: <span class="font-bold text-primary">presentación, video o podcast</span>, y dominá las herramientas clave: perfil comercial, catálogo digital, mensajes de bienvenida y ausencia, respuestas rápidas y listas.
             </p>
 <!-- Primary & Secondary CTA Buttons -->
-<div class="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-10">
-<a class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold font-label-lg text-label-lg shadow-md hover:bg-secondary-fixed-dim transition-all duration-200 transform hover:-translate-y-0.5" href="#modalidades">
+<div class="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-7 sm:mb-10">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold font-label-lg text-label-lg shadow-md hover:bg-secondary-fixed-dim transition-all duration-200 transform hover:-translate-y-0.5" href="#modalidades">
 <span class="">Empezar ahora</span>
 <span aria-hidden="true" class="material-symbols-outlined text-xl">rocket_launch</span>
 </a>
 
 </div>
 <!-- Social Proof Stats Row -->
-<div class="flex flex-wrap items-center gap-6 pt-6 border-t border-surface-container-high w-full">
-<div class="flex items-center gap-3">
-<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary shadow-sm">
-<span aria-hidden="true" class="material-symbols-outlined text-2xl">store</span>
+<div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:gap-6 pt-5 sm:pt-6 border-t border-surface-container-high w-full">
+<div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+<div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-full bg-surface-container flex items-center justify-center text-primary shadow-sm">
+<span aria-hidden="true" class="material-symbols-outlined text-xl sm:text-2xl">store</span>
 </div>
 <div>
-<p class="font-headline-sm text-headline-sm text-on-surface font-extrabold">+45.000</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Negocios capacitados</p>
+<p class="font-headline-sm text-xl sm:text-headline-sm text-on-surface font-extrabold leading-tight">+45.000</p>
+<p class="font-label-sm text-[11px] sm:text-label-sm text-on-surface-variant font-semibold leading-tight">Negocios capacitados</p>
 </div>
 </div>
 <div class="w-px h-10 bg-surface-container-high hidden sm:block"></div>
-<div class="flex items-center gap-3">
-<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-secondary shadow-sm">
-<span aria-hidden="true" class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">star</span>
+<div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+<div class="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-full bg-surface-container flex items-center justify-center text-secondary shadow-sm">
+<span aria-hidden="true" class="material-symbols-outlined text-xl sm:text-2xl" style="font-variation-settings: 'FILL' 1;">star</span>
 </div>
 <div>
-<div class="flex items-center gap-1">
-<span class="font-headline-sm text-headline-sm text-on-surface font-extrabold">4.9/5</span>
+<div class="flex flex-col sm:flex-row sm:items-center sm:gap-1">
+<span class="font-headline-sm text-xl sm:text-headline-sm text-on-surface font-extrabold leading-tight">4.9/5</span>
 <div class="flex text-secondary text-sm" aria-hidden="true">
-<span aria-hidden="true" class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span aria-hidden="true" class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span aria-hidden="true" class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span aria-hidden="true" class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<span aria-hidden="true" class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span aria-hidden="true" class="material-symbols-outlined text-[13px] sm:text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span aria-hidden="true" class="material-symbols-outlined text-[13px] sm:text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span aria-hidden="true" class="material-symbols-outlined text-[13px] sm:text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span aria-hidden="true" class="material-symbols-outlined text-[13px] sm:text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span aria-hidden="true" class="material-symbols-outlined text-[13px] sm:text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
 </div>
 </div>
-<p class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Satisfacción certificada</p>
+<p class="font-label-sm text-[11px] sm:text-label-sm text-on-surface-variant font-semibold leading-tight">Satisfacción certificada</p>
 </div>
 </div>
 </div>
 </div>
 <!-- Hero Right: foto + mensaje informativo (estático, no interactivo) -->
 <div class="lg:col-span-6 flex justify-center items-center relative cursor-default">
-<div class="relative w-full max-w-[480px] mx-auto mt-8 lg:mt-0 lg:h-[540px]">
+<div class="relative w-full max-w-[480px] mx-auto mt-2 lg:mt-0 lg:h-[540px]">
 <!-- Foto -->
 <div class="relative ml-auto w-[88%] sm:w-[78%] lg:absolute lg:right-0 lg:top-0 lg:w-[360px] h-64 sm:h-96 lg:h-[460px] rounded-[2rem] overflow-hidden shadow-2xl ring-1 ring-black/5">
 <img alt="Emprendedora utilizando WhatsApp Web en su laptop para ventas" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-UVxaYqwg2M6tRUHyjn40qy2hc833DWpcl7SQy7-4eT9PZ4X_AdAvc8kwxUV3R_bLoobFg7u4oMm4cddE3e45mUNHUK7I8Qs2OM1j1ZVfVLr9COdIMyMrbGi1GqvWBYwM8RLS95xrC0hpDr7uiDZbACRz15CnWueImN66ohKBOyFzARThQH01jXy1PdTotC4XDuWo8EPff4tx_TOQ7jobVuUwyLzoyMCaTSkGdKl37urctbmqu_gF">
@@ -738,12 +746,19 @@
     (function () {
       const btn = document.getElementById('menu-toggle');
       const menu = document.getElementById('mobile-menu');
+      const backdrop = document.createElement('div');
+      backdrop.id = 'menu-backdrop';
+      document.body.appendChild(backdrop);
       function setOpen(open) {
-        menu.classList.toggle('hidden', !open);
+        menu.classList.toggle('is-open', open);
+        backdrop.classList.toggle('is-open', open);
         btn.setAttribute('aria-expanded', open);
+        btn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
         document.getElementById('menu-toggle-icon').textContent = open ? 'close' : 'menu';
       }
-      btn.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+      btn.addEventListener('click', () => setOpen(!menu.classList.contains('is-open')));
+      backdrop.addEventListener('click', () => setOpen(false));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
       menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
     })();
   </script>
