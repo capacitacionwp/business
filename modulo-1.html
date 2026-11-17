@@ -542,15 +542,14 @@ Módulo 2<span aria-hidden="true" class="material-symbols-outlined text-[18px] t
 </div>
 <p class="text-sm text-on-surface-variant mb-4">Ahora tenés que demostrar que podés llevar a la práctica lo aprendido. Elegí un negocio real o ficticio y completá la configuración de su perfil comercial en tu propio celular.</p>
 <div class="rounded-2xl border border-surface-container p-4 sm:p-5 mb-4">
-<p class="font-semibold text-on-surface mb-3">Lista de comprobación</p>
-<div class="grid gap-2">
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q4"><span>El nombre permite identificar el negocio.</span></label>
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q4"><span>La categoría corresponde a la actividad comercial.</span></label>
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q4"><span>El horario representa la disponibilidad real de atención.</span></label>
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q4"><span>La foto de perfil se reconoce con claridad en tamaño pequeño.</span></label>
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q4"><span>La descripción explica qué ofrece el negocio.</span></label>
-</div>
-<p class="text-xs text-on-surface-variant mt-3"><span class="checklist-count">0</span> de 5 aspectos revisados</p>
+<p class="font-semibold text-on-surface mb-3">Antes de subir la captura, revisá que:</p>
+<ol class="grid gap-3">
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">1</span><span class="pt-0.5">El nombre permite identificar el negocio.</span></li>
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">2</span><span class="pt-0.5">La categoría corresponde a la actividad comercial.</span></li>
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">3</span><span class="pt-0.5">El horario representa la disponibilidad real de atención.</span></li>
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">4</span><span class="pt-0.5">La foto de perfil se reconoce con claridad en tamaño pequeño.</span></li>
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">5</span><span class="pt-0.5">La descripción explica qué ofrece el negocio.</span></li>
+</ol>
 </div>
 <p class="font-semibold text-on-surface mb-1">Entrega final</p>
 <p class="text-sm text-on-surface-variant mb-3">Subí una captura del perfil comercial configurado.</p>
@@ -585,7 +584,7 @@ Comprobar respuestas<span aria-hidden="true" class="material-symbols-outlined te
 <p class="text-sm text-primary-fixed-dim">Respondiste todo bien. Ya podés seguir con la próxima capacitación.</p>
 </div>
 </div>
-<a class="h-12 px-8 rounded-full bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary-fixed-dim font-bold text-sm flex items-center gap-2 transition-colors shrink-0" href="index.html#modalidades">
+<a class="h-12 px-8 rounded-full bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary-fixed-dim font-bold text-sm flex items-center gap-2 transition-colors shrink-0" href="modulo-2.html">
 Continuar<span aria-hidden="true" class="material-symbols-outlined text-[20px]">arrow_forward</span>
 </a>
 </div>
@@ -803,7 +802,7 @@ Continuar<span aria-hidden="true" class="material-symbols-outlined text-[20px]">
         const count = q.querySelectorAll('input:checked').length;
         return q.dataset.pick ? count === Number(q.dataset.pick) : count > 0;
       }
-      if (type === 'checklist') return !q.querySelector('input[type="checkbox"]:not(:checked)') && Boolean(progress.capture);
+      if (type === 'checklist') return Boolean(progress.capture);
       return Boolean(q.querySelector('input:checked'));
     }
     function isRight(q) {

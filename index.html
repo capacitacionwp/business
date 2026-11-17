@@ -154,6 +154,11 @@
     #menu-backdrop.is-open { opacity: 1; visibility: visible; transition: opacity .2s ease, visibility 0s; }
     @media (min-width: 768px) { #mobile-menu, #menu-backdrop { display: none; } }
   </style>
+<style>
+    /* Botón principal con degradé verde; al pasar el mouse el degradé se desplaza */
+    .btn-gradient { background-image: linear-gradient(100deg, #8dffab 0%, #25d366 50%, #1ea952 100%); background-size: 200% 100%; background-position: 0% 0; box-shadow: 0 8px 20px -6px rgba(37,211,102,.55); }
+    .btn-gradient:hover { background-position: 100% 0; box-shadow: 0 12px 26px -6px rgba(37,211,102,.65); }
+  </style>
 </head>
 <body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen">
 <!-- Header -->
@@ -204,7 +209,7 @@
             </p>
 <!-- Primary & Secondary CTA Buttons -->
 <div class="flex flex-wrap items-center gap-4 w-full sm:w-auto mb-7 sm:mb-10">
-<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold font-label-lg text-label-lg shadow-md hover:bg-secondary-fixed-dim transition-all duration-200 transform hover:-translate-y-0.5" href="#modalidades">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full btn-gradient text-on-secondary-fixed font-bold font-label-lg text-label-lg shadow-md transition-all duration-300 transform hover:-translate-y-0.5" href="#modalidades">
 <span class="">Empezar ahora</span>
 <span aria-hidden="true" class="material-symbols-outlined text-xl">rocket_launch</span>
 </a>
@@ -290,13 +295,14 @@
 <p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">
               Aprendé paso a paso las herramientas esenciales de WhatsApp Business para profesionalizar tu atención y aumentar tus ventas.
             </p>
-<div class="mt-5 inline-flex items-start gap-3 p-4 rounded-2xl bg-surface-container-lowest border border-surface-container shadow-sm max-w-2xl">
+</div>
+<div class="md:self-start inline-flex items-start gap-3 p-4 rounded-2xl bg-surface-container-lowest border border-surface-container shadow-sm md:max-w-sm shrink-0">
 <span aria-hidden="true" class="material-symbols-outlined text-secondary text-[22px] shrink-0">lightbulb</span>
 <p class="font-body-sm text-sm text-on-surface">
 <span class="font-bold">¿Es tu primera vez con WhatsApp Business?</span> Empezá por el Módulo 1. <span class="font-bold">¿Ya lo usás?</span> Elegí directamente el módulo que necesites.
               </p>
 </div>
-</div></div>
+</div>
 <!-- 3 Modality Cards -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8"><!-- CARD 1: Configurar el Perfil Comercial -->
 <a class="bg-surface-container-lowest rounded-3xl p-6 lg:p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between border border-surface-container group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary" href="modulo-1.html">

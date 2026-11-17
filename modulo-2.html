@@ -519,14 +519,13 @@ Módulo 3<span aria-hidden="true" class="material-symbols-outlined text-[18px] t
 <p class="text-sm text-on-surface-variant mb-4">En WhatsApp Business, creá un catálogo con <span class="font-semibold text-on-surface">al menos 3 productos o servicios</span>. Podés usar un negocio real o uno ficticio.</p>
 <div class="rounded-2xl border border-surface-container p-4 sm:p-5 mb-4">
 <p class="font-semibold text-on-surface mb-3">Para cada artículo:</p>
-<div class="grid gap-2">
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q3"><span>Completé el nombre.</span></label>
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q3"><span>Agregué una foto.</span></label>
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q3"><span>Indiqué el precio, si corresponde.</span></label>
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q3"><span>Escribí una descripción breve.</span></label>
-<label class="quiz-opt"><input class="rounded" type="checkbox" name="q3"><span>Guardé los cambios.</span></label>
-</div>
-<p class="text-xs text-on-surface-variant mt-3"><span class="checklist-count">0</span> de 5 pasos revisados</p>
+<ol class="grid gap-3">
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">1</span><span class="pt-0.5">Completá el nombre.</span></li>
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">2</span><span class="pt-0.5">Agregá una foto.</span></li>
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">3</span><span class="pt-0.5">Indicá el precio, si corresponde.</span></li>
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">4</span><span class="pt-0.5">Escribí una descripción breve.</span></li>
+<li class="flex items-start gap-3 text-sm text-on-surface"><span aria-hidden="true" class="w-6 h-6 shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold flex items-center justify-center">5</span><span class="pt-0.5">Guardá los cambios.</span></li>
+</ol>
 </div>
 <p class="font-semibold text-on-surface mb-1">Entrega final</p>
 <p class="text-sm text-on-surface-variant mb-3">Subí una captura del catálogo con los artículos cargados. Si algún producto está en revisión, no hace falta esperar a que lo aprueben.</p>
@@ -580,7 +579,7 @@ Comprobar respuestas<span aria-hidden="true" class="material-symbols-outlined te
 <p class="text-sm text-primary-fixed-dim">Respondiste todo bien. Ya podés seguir con la próxima capacitación.</p>
 </div>
 </div>
-<a class="h-12 px-8 rounded-full bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary-fixed-dim font-bold text-sm flex items-center gap-2 transition-colors shrink-0" href="index.html#modalidades">
+<a class="h-12 px-8 rounded-full bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary-fixed-dim font-bold text-sm flex items-center gap-2 transition-colors shrink-0" href="modulo-3.html">
 Continuar<span aria-hidden="true" class="material-symbols-outlined text-[20px]">arrow_forward</span>
 </a>
 </div>
@@ -798,7 +797,7 @@ Continuar<span aria-hidden="true" class="material-symbols-outlined text-[20px]">
         const count = q.querySelectorAll('input:checked').length;
         return q.dataset.pick ? count === Number(q.dataset.pick) : count > 0;
       }
-      if (type === 'checklist') return !q.querySelector('input[type="checkbox"]:not(:checked)') && Boolean(progress.capture);
+      if (type === 'checklist') return Boolean(progress.capture);
       return Boolean(q.querySelector('input:checked'));
     }
     function isRight(q) {
