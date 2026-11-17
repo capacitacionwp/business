@@ -556,15 +556,35 @@
 </div>
 <!-- Modality Selector -->
 <div>
-<label class="block font-label-md text-sm font-bold text-on-surface mb-2" for="course-type">
+<fieldset>
+<legend class="block font-label-md text-sm font-bold text-on-surface mb-1">
                   ¿Qué formato de capacitación realizaste?
-                </label>
-<select class="w-full h-12 px-4 rounded-xl bg-surface-container-low border-0 text-on-surface font-body-md text-sm focus:outline-none focus:ring-2 focus:ring-primary shadow-inner" id="course-type">
-<option value="video">Video</option>
-<option value="guia">Presentación</option>
-<option value="podcast">Podcast</option>
-<option value="todos">Hice los tres formatos</option>
-</select>
+                </legend>
+<p class="text-xs text-on-surface-variant mb-2">Podés marcar uno o más.</p>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+<label class="cursor-pointer select-none">
+<input class="peer sr-only" name="course-type" type="checkbox" value="guia">
+<span class="flex items-center gap-2 h-12 px-3 rounded-xl bg-surface-container-low border-2 border-transparent text-on-surface text-sm font-semibold transition-colors hover:border-surface-container-high peer-checked:border-primary peer-checked:bg-surface-container-lowest peer-focus-visible:ring-2 peer-focus-visible:ring-primary [&>.box]:peer-checked:bg-primary [&>.box]:peer-checked:border-primary">
+<span aria-hidden="true" class="box w-5 h-5 shrink-0 rounded-md border-2 border-outline flex items-center justify-center text-on-primary transition-colors"><span class="material-symbols-outlined text-[16px]">check</span></span>
+<span aria-hidden="true" class="material-symbols-outlined text-[20px] text-primary">slideshow</span>Presentación
+</span>
+</label>
+<label class="cursor-pointer select-none">
+<input class="peer sr-only" name="course-type" type="checkbox" value="video">
+<span class="flex items-center gap-2 h-12 px-3 rounded-xl bg-surface-container-low border-2 border-transparent text-on-surface text-sm font-semibold transition-colors hover:border-surface-container-high peer-checked:border-primary peer-checked:bg-surface-container-lowest peer-focus-visible:ring-2 peer-focus-visible:ring-primary [&>.box]:peer-checked:bg-primary [&>.box]:peer-checked:border-primary">
+<span aria-hidden="true" class="box w-5 h-5 shrink-0 rounded-md border-2 border-outline flex items-center justify-center text-on-primary transition-colors"><span class="material-symbols-outlined text-[16px]">check</span></span>
+<span aria-hidden="true" class="material-symbols-outlined text-[20px] text-primary">play_circle</span>Video
+</span>
+</label>
+<label class="cursor-pointer select-none">
+<input class="peer sr-only" name="course-type" type="checkbox" value="podcast">
+<span class="flex items-center gap-2 h-12 px-3 rounded-xl bg-surface-container-low border-2 border-transparent text-on-surface text-sm font-semibold transition-colors hover:border-surface-container-high peer-checked:border-primary peer-checked:bg-surface-container-lowest peer-focus-visible:ring-2 peer-focus-visible:ring-primary [&>.box]:peer-checked:bg-primary [&>.box]:peer-checked:border-primary">
+<span aria-hidden="true" class="box w-5 h-5 shrink-0 rounded-md border-2 border-outline flex items-center justify-center text-on-primary transition-colors"><span class="material-symbols-outlined text-[16px]">check</span></span>
+<span aria-hidden="true" class="material-symbols-outlined text-[20px] text-primary">headphones</span>Podcast
+</span>
+</label>
+</div>
+</fieldset>
 </div>
 <!-- Comment Textarea -->
 <div>
